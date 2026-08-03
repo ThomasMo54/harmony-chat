@@ -1,3 +1,3 @@
 package com.motompro.harmony.backend.user.exception
 
-class NameAlreadyExistsException : RuntimeException()
+class NameAlreadyExistsException(name: String) : RuntimeException("User with name $name already exists")

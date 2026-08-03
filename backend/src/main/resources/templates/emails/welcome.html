@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Activate your Harmony account</title>
+</head>
+<body style="margin:0; padding:0; background-color:#f4f5f7; font-family: Arial, Helvetica, sans-serif;">
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f5f7; padding:40px 0;">
+    <tr>
+        <td align="center">
+            <table role="presentation" width="480" cellpadding="0" cellspacing="0"
+                   style="background-color:#ffffff; border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+
+                <!-- Header -->
+                <tr>
+                    <td style="background-color:#4f46e5; padding:28px; text-align:center;">
+                        <h1 style="margin:0; color:#ffffff; font-size:24px; letter-spacing:1px;">
+                            Harmony
+                        </h1>
+                    </td>
+                </tr>
+
+                <!-- Content -->
+                <tr>
+                    <td style="padding:32px 40px;">
+                        <h2 style="margin-top:0; color:#1f2937; font-size:20px;">
+                            Welcome <span th:text="${username}">User</span>!
+                        </h2>
+
+                        <p style="color:#4b5563; font-size:15px; line-height:1.5;">
+                            Thank you for signing up on <strong>Harmony</strong>.
+                            To activate your account, please enter the verification code below
+                            in the app:
+                        </p>
+
+                        <!-- Activation code -->
+                        <div style="text-align:center; margin:32px 0;">
+                                <span style="display:inline-block; padding:16px 32px; background-color:#eef2ff;
+                                             border-radius:8px; font-size:32px; font-weight:bold;
+                                             letter-spacing:8px; color:#4f46e5;"
+                                      th:text="${activationCode}">
+                                    123456
+                                </span>
+                        </div>
+
+                        <p style="color:#4b5563; font-size:14px; line-height:1.5;">
+                            This code is valid for <strong th:text="${validityMinutes} + ' minutes'">15 minutes</strong>.
+                            If you did not request this, you can safely ignore this email.
+                        </p>
+
+                        <p style="color:#9ca3af; font-size:13px; margin-top:32px;">
+                            See you soon on Harmony,<br>
+                            The Harmony Team
+                        </p>
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td style="background-color:#f9fafb; padding:20px 40px; text-align:center;">
+                        <p style="color:#9ca3af; font-size:12px; margin:0;">
+                            © <span th:text="${#dates.year(#dates.createNow())}">2026</span> Harmony. All rights reserved.
+                        </p>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

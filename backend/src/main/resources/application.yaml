@@ -17,3 +17,14 @@ spring:
 server:
   servlet:
     context-path: /api
+
+brevo:
+  api-key: ${BREVO_API_KEY}
+  sender-email: morettithomas54@gmail.com
+  sender-name: Harmony
+
+logging:
+  level:
+    com:
+      motompro:
+        harmony=DEBUG:

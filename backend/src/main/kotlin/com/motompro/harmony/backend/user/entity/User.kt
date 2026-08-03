@@ -1,4 +1,4 @@
-package com.motompro.harmony.backend.user
+package com.motompro.harmony.backend.user.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
