@@ -55,7 +55,6 @@ class RateLimitInterceptor : HandlerInterceptor {
     }
 
     private fun getClientIp(request: HttpServletRequest): String {
-        return request.getHeader("X-Forwarded-For")?.split(",")?.first()?.trim()
-            ?: request.remoteAddr
+        return request.remoteAddr
     }
 }
