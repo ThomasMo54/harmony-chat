@@ -1,6 +1,6 @@
 package com.motompro.harmony.backend.user
 
-import com.motompro.harmony.backend.error.ErrorResponse
+import com.motompro.harmony.backend.interceptor.ratelimit.RateLimit
 import com.motompro.harmony.backend.user.dto.ActivateUserDto
 import com.motompro.harmony.backend.user.dto.CreateUserDto
 import com.motompro.harmony.backend.user.dto.ResendCodeDto
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.time.OffsetDateTime
+import java.time.temporal.ChronoUnit
 
 @RestController
 @RequestMapping("/users")
@@ -27,6 +28,7 @@ class UserController(
     private val userNotificationService: UserNotificationService,
 ) {
 
+    @RateLimit(capacity = 5, refillTokens = 5, refillDuration = 1, refillUnit = ChronoUnit.MINUTES)
     @PostMapping
     fun createUser(@Valid @RequestBody createUserDto: CreateUserDto): ResponseEntity<UserDto> {
         val (user, activationCode) = userService.createUserAndActivationCode(createUserDto)
@@ -34,6 +36,7 @@ class UserController(
         return ResponseEntity.status(HttpStatus.CREATED).body(user.toDto())
     }
 
+    @RateLimit(capacity = 1, refillTokens = 1, refillDuration = 1, refillUnit = ChronoUnit.MINUTES)
     @PostMapping("/resend-code")
     fun resendCode(@Valid @RequestBody resendCodeDto: ResendCodeDto): ResponseEntity<*> {
         val userId = resendCodeDto.userId
@@ -48,6 +51,7 @@ class UserController(
         return ResponseEntity.status(HttpStatus.CREATED).build<Any>()
     }
 
+    @RateLimit(capacity = 5, refillTokens = 5, refillDuration = 1, refillUnit = ChronoUnit.MINUTES)
     @PatchMapping("/activate")
     fun activateUser(@Valid @RequestBody activateUserDto: ActivateUserDto) {
         val activationCode = userService.findUserActivationCodeByCode(activateUserDto.code)
