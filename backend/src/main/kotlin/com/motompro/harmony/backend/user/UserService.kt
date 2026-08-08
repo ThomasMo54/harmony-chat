@@ -5,11 +5,10 @@ import com.motompro.harmony.backend.user.entity.User
 import com.motompro.harmony.backend.user.entity.UserActivationCode
 import com.motompro.harmony.backend.user.exception.EmailAlreadyExistsException
 import com.motompro.harmony.backend.user.exception.NameAlreadyExistsException
-import com.motompro.harmony.backend.user.exception.UserNotFoundException
+import com.motompro.harmony.backend.user.exception.UserWithIdNotFoundException
 import com.motompro.harmony.backend.user.mapper.toEntity
 import com.motompro.harmony.backend.user.repository.UserRepository
 import com.motompro.harmony.backend.user.repository.UserActivationCodeRepository
-import jakarta.persistence.EntityNotFoundException
 import org.hibernate.exception.ConstraintViolationException
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -55,7 +54,7 @@ class UserService(
 
     fun activateUser(userId: UUID) {
         val user = findUserById(userId)
-            ?: throw UserNotFoundException(userId)
+            ?: throw UserWithIdNotFoundException(userId)
         user.isEnabled = true
         userRepository.save(user)
     }

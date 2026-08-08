@@ -6,7 +6,7 @@ import com.motompro.harmony.backend.user.exception.ActivationCodeNotFoundExcepti
 import com.motompro.harmony.backend.user.exception.EmailAlreadyExistsException
 import com.motompro.harmony.backend.user.exception.NameAlreadyExistsException
 import com.motompro.harmony.backend.user.exception.UserAlreadyActivatedException
-import com.motompro.harmony.backend.user.exception.UserNotFoundException
+import com.motompro.harmony.backend.user.exception.UserWithIdNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException
@@ -39,8 +39,8 @@ class UserExceptionHandler {
         )
     }
 
-    @ExceptionHandler(UserNotFoundException::class)
-    fun handleUserNotFound(ex: UserNotFoundException): ResponseEntity<ErrorResponse> {
+    @ExceptionHandler(UserWithIdNotFoundException::class)
+    fun handleUserNotFound(ex: UserWithIdNotFoundException): ResponseEntity<ErrorResponse> {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse(
             message = ex.message,
             code = UserErrorCode.NOT_FOUND

@@ -8,7 +8,7 @@ import com.motompro.harmony.backend.user.dto.UserDto
 import com.motompro.harmony.backend.user.exception.ActivationCodeExpiredException
 import com.motompro.harmony.backend.user.exception.ActivationCodeNotFoundException
 import com.motompro.harmony.backend.user.exception.UserAlreadyActivatedException
-import com.motompro.harmony.backend.user.exception.UserNotFoundException
+import com.motompro.harmony.backend.user.exception.UserWithIdNotFoundException
 import com.motompro.harmony.backend.user.mapper.toDto
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
@@ -41,7 +41,7 @@ class UserController(
     fun resendCode(@Valid @RequestBody resendCodeDto: ResendCodeDto): ResponseEntity<*> {
         val userId = resendCodeDto.userId
         val user = userService.findUserById(userId)
-            ?: throw UserNotFoundException(userId)
+            ?: throw UserWithIdNotFoundException(userId)
         if (user.isEnabled) {
             throw UserAlreadyActivatedException()
         }
