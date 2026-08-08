@@ -1,7 +1,7 @@
 package com.motompro.harmony.backend.filter
 
 import com.motompro.harmony.backend.auth.CustomUserDetailsService
-import com.motompro.harmony.backend.auth.JwtService
+import com.motompro.harmony.backend.auth.service.JwtService
 import io.jsonwebtoken.JwtException
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest

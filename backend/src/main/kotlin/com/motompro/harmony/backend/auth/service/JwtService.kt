@@ -1,4 +1,4 @@
-package com.motompro.harmony.backend.auth
+package com.motompro.harmony.backend.auth.service
 
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
@@ -11,12 +11,12 @@ import javax.crypto.SecretKey
 @Component
 class JwtService(
     @Value("\${jwt.secret}") secret: String,
-    @Value("\${jwt.expiration-ms}") private val expirationMs: Long
+    @Value("\${jwt.access-token-expiration-ms}") private val expirationMs: Long
 ) {
 
     private val key: SecretKey = Keys.hmacShaKeyFor(secret.toByteArray())
 
-    fun generateToken(userId: UUID): String {
+    fun generateAccessToken(userId: UUID): String {
         val now = Date()
         val expiry = Date(now.time + expirationMs)
 

@@ -1,7 +1,10 @@
-package com.motompro.harmony.backend.auth
+package com.motompro.harmony.backend.auth.service
 
+import com.motompro.harmony.backend.auth.CustomUserDetailsService
 import com.motompro.harmony.backend.auth.dto.LoginRequestDto
 import com.motompro.harmony.backend.auth.dto.LoginResponseDto
+import com.motompro.harmony.backend.auth.dto.RefreshTokenRequestDto
+import com.motompro.harmony.backend.auth.dto.RefreshTokenResponseDto
 import com.motompro.harmony.backend.auth.exception.InvalidCredentialsException
 import com.motompro.harmony.backend.auth.exception.UserNotEnabledException
 import org.springframework.security.authentication.AuthenticationManager
@@ -14,7 +17,8 @@ import org.springframework.stereotype.Service
 class AuthService(
     private val authenticationManager: AuthenticationManager,
     private val userDetailsService: CustomUserDetailsService,
-    private val jwtService: JwtService
+    private val jwtService: JwtService,
+    private val refreshTokenService: RefreshTokenService
 ) {
 
     fun login(request: LoginRequestDto): LoginResponseDto {
@@ -29,7 +33,24 @@ class AuthService(
         }
 
         val userPrincipal = userDetailsService.loadUserByUsername(request.email)
-        val token = jwtService.generateToken(userPrincipal.getId())
-        return LoginResponseDto(token)
+        val accessToken = jwtService.generateAccessToken(userPrincipal.getId())
+        val refreshToken = refreshTokenService.createRefreshToken(userPrincipal.getId())
+
+        return LoginResponseDto(accessToken, refreshToken)
+    }
+
+    fun refresh(request: RefreshTokenRequestDto): RefreshTokenResponseDto {
+        val (userId, newRefreshToken) = refreshTokenService.rotateRefreshToken(request.refreshToken)
+        val newAccessToken = jwtService.generateAccessToken(userId)
+        return RefreshTokenResponseDto(newAccessToken, newRefreshToken)
+    }
+
+    fun logout(refreshToken: String) {
+        val userId = try {
+            refreshTokenService.rotateRefreshToken(refreshToken).first
+        } catch (_: Exception) {
+            return
+        }
+        refreshTokenService.revokeAllForUser(userId)
     }
 }
