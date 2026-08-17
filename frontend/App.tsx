@@ -1,3 +1,4 @@
+import "./src/i18n";
 import {NavigationContainer} from "@react-navigation/native";
 import RootNavigator from "./src/navigation/RootNavigator.tsx";
 import { AuthProvider } from "./src/context/AuthContext.tsx";

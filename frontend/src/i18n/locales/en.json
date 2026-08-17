@@ -1,0 +1,67 @@
+{
+  "common": {
+    "genericError": "Something went wrong. Please try again.",
+    "networkError": "Unable to reach the server. Check your connection and try again.",
+    "rateLimited": "Too many attempts. Please wait a moment and try again."
+  },
+  "tabs": {
+    "home": "Home"
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome back",
+      "emailLabel": "EMAIL",
+      "passwordLabel": "PASSWORD",
+      "show": "Show",
+      "hide": "Hide",
+      "submit": "Log In",
+      "noAccount": "New here?",
+      "createAccount": "Create an account",
+      "disconnect": "Disconnect",
+      "missingFields": "Please enter your email and password.",
+      "errors": {
+        "invalidCredentials": "Incorrect email or password.",
+        "userNotEnabled": "Your account is not enabled yet. Please check your email to activate it.",
+        "generic": "Unable to log in. Please try again."
+      }
+    },
+    "register": {
+      "title": "Create an account",
+      "emailLabel": "EMAIL",
+      "usernameLabel": "USERNAME",
+      "passwordLabel": "PASSWORD",
+      "confirmPasswordLabel": "CONFIRM PASSWORD",
+      "submit": "Continue",
+      "haveAccount": "Already have an account?",
+      "logIn": "Log in",
+      "invalidEmail": "Please enter a valid email address.",
+      "usernameTooShort": "Username size must be higher or equal to {{size}} characters.",
+      "usernameTooLong": "Username size must be lower or equal to {{size}} characters.",
+      "passwordTooShort": "Password size must be higher or equal to {{size}} characters.",
+      "passwordTooLong": "Password size must be lower or equal to {{size}} characters.",
+      "passwordsDoNotMatch": "Passwords do not match.",
+      "errors": {
+        "emailAlreadyExists": "An account with this email already exist.",
+        "nameAlreadyExists": "An account with this username already exist.",
+        "generic": "Unable to sign in. Please try again."
+      }
+    },
+    "verify": {
+      "title": "Check your email",
+      "description": "We sent a {{length}}-digit code to {{email}}.",
+      "codeLabel": "CODE",
+      "submit": "Verify",
+      "noCode": "Didn't get it?",
+      "resend": "Resend code",
+      "resendCountdown": "Resend code ({{seconds}}s)",
+      "emptyCode": "Please enter your code.",
+      "invalidCodeLength": "The code must be {{length}} digit long.",
+      "errors": {
+        "codeNotFound": "Invalid code.",
+        "codeExpired": "This code has expired.",
+        "alreadyActivated": "Your account is already verified.",
+        "generic": "Unable to verify your account. Please try again."
+      }
+    }
+  }
+}

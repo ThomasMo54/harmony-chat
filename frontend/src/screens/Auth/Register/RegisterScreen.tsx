@@ -6,6 +6,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { AuthStackParamList } from "../../../navigation/types.ts";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 import { createUser, USER_ERROR_CODES } from "../../../api/userApi.ts";
 
 type RegisterScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, 'Register'>;
@@ -19,6 +20,7 @@ const minPasswordSize = 8;
 const maxPasswordSize = 200;
 
 function RegisterScreen() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -35,26 +37,26 @@ function RegisterScreen() {
     let hasError = false;
 
     if (!email.trim() || !emailRegex.test(email)) {
-      setEmailError('Please enter a valid email address.');
+      setEmailError(t('auth.register.invalidEmail'));
       hasError = true;
     }
 
     if (username.length < minUsernameSize) {
-      setUsernameError(`Username size must be higher or equal to ${minUsernameSize} characters.`);
+      setUsernameError(t('auth.register.usernameTooShort', { size: minUsernameSize }));
       hasError = true;
     } else if (username.length > maxUsernameSize) {
-      setUsernameError(`Username size must be lower or equal to ${maxUsernameSize} characters.`);
+      setUsernameError(t('auth.register.usernameTooLong', { size: maxUsernameSize }));
       hasError = true;
     }
 
     if (password.length < minPasswordSize) {
-      setPasswordError(`Password size must be higher or equal to ${minPasswordSize} characters.`);
+      setPasswordError(t('auth.register.passwordTooShort', { size: minPasswordSize }));
       hasError = true;
     } else if (password.length > maxPasswordSize) {
-      setPasswordError(`Password size must be lower or equal to ${maxPasswordSize} characters.`);
+      setPasswordError(t('auth.register.passwordTooLong', { size: maxPasswordSize }));
       hasError = true;
     } else if (password !== confirmPassword) {
-      setPasswordError(`Passwords do not match.`);
+      setPasswordError(t('auth.register.passwordsDoNotMatch'));
       hasError = true;
     }
 
@@ -86,33 +88,33 @@ function RegisterScreen() {
 
   function handleRegisterError(err: unknown) {
     if (!axios.isAxiosError(err)) {
-      setRegisterError('Something went wrong. Please try again.')
+      setRegisterError(t('common.genericError'))
       return;
     }
 
     if (!err.response) {
-      setRegisterError('Unable to reach the server. Check your connection and try again.');
+      setRegisterError(t('common.networkError'));
       return;
     }
 
     const { status, data } = err.response;
 
     if (status === 429) {
-      setRegisterError('Too many attempts. Please wait a moment and try again.')
+      setRegisterError(t('common.rateLimited'))
       return;
     }
 
     switch (data?.code) {
       case USER_ERROR_CODES.EMAIL_ALREADY_EXISTS: {
-        setEmailError('An account with this email already exist.');
+        setEmailError(t('auth.register.errors.emailAlreadyExists'));
         break;
       }
       case USER_ERROR_CODES.NAME_ALREADY_EXISTS: {
-        setUsernameError('An account with this username already exist.');
+        setUsernameError(t('auth.register.errors.nameAlreadyExists'));
         break;
       }
       default:
-        setRegisterError('Unable to sign in. Please try again.');
+        setRegisterError(t('auth.register.errors.generic'));
     }
   }
 
@@ -123,9 +125,9 @@ function RegisterScreen() {
           <Text style={styles.iconText}>💬</Text>
         </View>
 
-        <Text style={styles.title}>Create an account</Text>
+        <Text style={styles.title}>{t('auth.register.title')}</Text>
 
-        <Text style={styles.label}>EMAIL</Text>
+        <Text style={styles.label}>{t('auth.register.emailLabel')}</Text>
         <View style={styles.inputWrapper}>
           <TextInput
             style={styles.input}
@@ -137,7 +139,7 @@ function RegisterScreen() {
         </View>
         {emailError && <Text style={styles.errorText}>{emailError}</Text>}
 
-        <Text style={styles.label}>USERNAME</Text>
+        <Text style={styles.label}>{t('auth.register.usernameLabel')}</Text>
         <View style={styles.inputWrapper}>
           <Text style={styles.atSign}>@</Text>
           <TextInput
@@ -149,7 +151,7 @@ function RegisterScreen() {
         </View>
         {usernameError && <Text style={styles.errorText}>{usernameError}</Text>}
 
-        <Text style={styles.label}>PASSWORD</Text>
+        <Text style={styles.label}>{t('auth.register.passwordLabel')}</Text>
         <View style={styles.inputWrapper}>
           <TextInput
             style={styles.input}
@@ -160,7 +162,7 @@ function RegisterScreen() {
         </View>
         {passwordError && <Text style={styles.errorText}>{passwordError}</Text>}
 
-        <Text style={styles.label}>CONFIRM PASSWORD</Text>
+        <Text style={styles.label}>{t('auth.register.confirmPasswordLabel')}</Text>
         <View style={styles.inputWrapper}>
           <TextInput
             style={styles.input}
@@ -171,15 +173,15 @@ function RegisterScreen() {
         </View>
 
         <TouchableOpacity style={styles.button} activeOpacity={0.85} onPress={() => handleRegister()}>
-          <Text style={styles.buttonText}>Continue</Text>
+          <Text style={styles.buttonText}>{t('auth.register.submit')}</Text>
         </TouchableOpacity>
         {registerError && <Text style={styles.errorText}>{registerError}</Text>}
 
         <View style={styles.divider} />
 
         <Text style={styles.loginText}>
-          Already have an account?{' '}
-          <Text style={styles.loginLink} onPress={() => navigateToLogIn()}>Log in</Text>
+          {t('auth.register.haveAccount')}{' '}
+          <Text style={styles.loginLink} onPress={() => navigateToLogIn()}>{t('auth.register.logIn')}</Text>
         </Text>
       </ScrollView>
     </SafeAreaView>

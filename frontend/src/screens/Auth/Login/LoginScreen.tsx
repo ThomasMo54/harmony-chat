@@ -2,6 +2,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ActivityIndicator, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useState } from "react";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "../../../context/AuthContext.tsx";
 import { COLORS } from "../../../constants/colors.ts";
 import { useNavigation } from "@react-navigation/native";
@@ -12,6 +13,7 @@ import { AUTH_ERROR_CODES } from "../../../api/authApi.ts";
 type LoginScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, 'Login'>;
 
 function LoginScreen() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -24,7 +26,7 @@ function LoginScreen() {
     if (isSubmitting) return;
 
     if (!email.trim() || !password) {
-      setError('Please enter your email and password.');
+      setError(t('auth.login.missingFields'));
       return;
     }
 
@@ -46,26 +48,26 @@ function LoginScreen() {
 
   function getLoginErrorMessage(err: unknown): string {
     if (!axios.isAxiosError(err)) {
-      return 'Something went wrong. Please try again.';
+      return t('common.genericError');
     }
 
     if (!err.response) {
-      return 'Unable to reach the server. Check your connection and try again.';
+      return t('common.networkError');
     }
 
     const { status, data } = err.response;
 
     if (status === 429) {
-      return 'Too many attempts. Please wait a moment and try again.';
+      return t('common.rateLimited');
     }
 
     switch (data?.code) {
       case AUTH_ERROR_CODES.INVALID_CREDENTIALS:
-        return 'Incorrect email or password.';
+        return t('auth.login.errors.invalidCredentials');
       case AUTH_ERROR_CODES.USER_NOT_ENABLED:
-        return 'Your account is not enabled yet. Please check your email to activate it.';
+        return t('auth.login.errors.userNotEnabled');
       default:
-        return data?.message ?? 'Unable to log in. Please try again.';
+        return data?.message ?? t('auth.login.errors.generic');
     }
   }
 
@@ -76,9 +78,9 @@ function LoginScreen() {
           <Text style={styles.iconText}>💬</Text>
         </View>
 
-        <Text style={styles.title}>Welcome back</Text>
+        <Text style={styles.title}>{t('auth.login.title')}</Text>
 
-        <Text style={styles.label}>EMAIL</Text>
+        <Text style={styles.label}>{t('auth.login.emailLabel')}</Text>
         <View style={styles.inputWrapper}>
           <TextInput
             style={styles.input}
@@ -89,7 +91,7 @@ function LoginScreen() {
           />
         </View>
 
-        <Text style={styles.label}>PASSWORD</Text>
+        <Text style={styles.label}>{t('auth.login.passwordLabel')}</Text>
         <View style={styles.inputWrapper}>
           <TextInput
             style={styles.input}
@@ -98,7 +100,7 @@ function LoginScreen() {
             secureTextEntry={!showPassword}
           />
           <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-            <Text style={styles.showText}>{showPassword ? 'Hide' : 'Show'}</Text>
+            <Text style={styles.showText}>{showPassword ? t('auth.login.hide') : t('auth.login.show')}</Text>
           </TouchableOpacity>
         </View>
 
@@ -112,18 +114,18 @@ function LoginScreen() {
         >
           {isSubmitting
             ? <ActivityIndicator color="#fff" />
-            : <Text style={styles.buttonText}>Log In</Text>}
+            : <Text style={styles.buttonText}>{t('auth.login.submit')}</Text>}
         </TouchableOpacity>
 
         <View style={styles.divider} />
 
         <Text style={styles.registerText}>
-          New here?{' '}
-          <Text style={styles.registerLink} onPress={() => navigateToRegister()}>Create an account</Text>
+          {t('auth.login.noAccount')}{' '}
+          <Text style={styles.registerLink} onPress={() => navigateToRegister()}>{t('auth.login.createAccount')}</Text>
         </Text>
 
         <TouchableOpacity onPress={logout}>
-          <Text>Disconnect</Text>
+          <Text>{t('auth.login.disconnect')}</Text>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ActivityIndicator, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useTranslation } from "react-i18next";
 import { COLORS } from "../../../constants/colors.ts";
 import { AuthStackParamList } from "../../../navigation/types.ts";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -13,6 +14,7 @@ const codeLength = 6;
 const resendCooldownSeconds = 60;
 
 function VerifyScreen({ route, navigation }: VerifyScreenRouteProp) {
+  const { t } = useTranslation();
   const { email, userId } = route.params;
 
   const [code, setCode] = useState('');
@@ -32,12 +34,12 @@ function VerifyScreen({ route, navigation }: VerifyScreenRouteProp) {
     if (isSubmitting) return;
 
     if (!code.trim()) {
-      setCodeError('Please enter your code.');
+      setCodeError(t('auth.verify.emptyCode'));
       return;
     }
 
     if (code.length !== codeLength) {
-      setCodeError(`The code must be ${codeLength} digit long.`);
+      setCodeError(t('auth.verify.invalidCodeLength', { length: codeLength }));
       return;
     }
 
@@ -57,37 +59,37 @@ function VerifyScreen({ route, navigation }: VerifyScreenRouteProp) {
 
   function handleVerifyError(err: unknown) {
     if (!axios.isAxiosError(err)) {
-      setVerifyError('Something went wrong. Please try again.')
+      setVerifyError(t('common.genericError'))
       return;
     }
 
     if (!err.response) {
-      setVerifyError('Unable to reach the server. Check your connection and try again.');
+      setVerifyError(t('common.networkError'));
       return;
     }
 
     const { status, data } = err.response;
 
     if (status === 429) {
-      setVerifyError('Too many attempts. Please wait a moment and try again.')
+      setVerifyError(t('common.rateLimited'))
       return;
     }
 
     switch (data?.code) {
       case USER_ERROR_CODES.ACTIVATION_CODE_NOT_FOUND: {
-        setCodeError('Invalid code.');
+        setCodeError(t('auth.verify.errors.codeNotFound'));
         break;
       }
       case USER_ERROR_CODES.ACTIVATION_CODE_EXPIRED: {
-        setCodeError('This code has expired.');
+        setCodeError(t('auth.verify.errors.codeExpired'));
         break;
       }
       case USER_ERROR_CODES.ALREADY_ACTIVATED: {
-        setVerifyError('Your account is already verified.');
+        setVerifyError(t('auth.verify.errors.alreadyActivated'));
         break;
       }
       default:
-        setVerifyError('Unable to verify your account. Please try again.');
+        setVerifyError(t('auth.verify.errors.generic'));
     }
   }
 
@@ -109,40 +111,40 @@ function VerifyScreen({ route, navigation }: VerifyScreenRouteProp) {
 
   function handleResendError(err: unknown) {
     if (!axios.isAxiosError(err)) {
-      setVerifyError('Something went wrong. Please try again.')
+      setVerifyError(t('common.genericError'))
       return;
     }
 
     if (!err.response) {
-      setVerifyError('Unable to reach the server. Check your connection and try again.');
+      setVerifyError(t('common.networkError'));
       return;
     }
 
     const { status, data } = err.response;
 
     if (status === 429) {
-      setVerifyError('Too many attempts. Please wait a moment and try again.')
+      setVerifyError(t('common.rateLimited'))
       return;
     }
 
     switch (data?.code) {
       case USER_ERROR_CODES.ALREADY_ACTIVATED: {
-        setVerifyError('Your account is already verified.');
+        setVerifyError(t('auth.verify.errors.alreadyActivated'));
         break;
       }
       default:
-        setVerifyError('Unable to verify your account. Please try again.');
+        setVerifyError(t('auth.verify.errors.generic'));
     }
   }
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
       <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.title}>Check your email</Text>
+        <Text style={styles.title}>{t('auth.verify.title')}</Text>
 
-        <Text style={styles.description}>We sent a {codeLength}-digit code to {email}.</Text>
+        <Text style={styles.description}>{t('auth.verify.description', { length: codeLength, email })}</Text>
 
-        <Text style={styles.label}>CODE</Text>
+        <Text style={styles.label}>{t('auth.verify.codeLabel')}</Text>
         <View style={styles.inputWrapper}>
           <TextInput
             style={styles.input}
@@ -161,15 +163,15 @@ function VerifyScreen({ route, navigation }: VerifyScreenRouteProp) {
         >
           {isSubmitting
             ? <ActivityIndicator color="#fff" />
-            : <Text style={styles.buttonText}>Verify</Text>}
+            : <Text style={styles.buttonText}>{t('auth.verify.submit')}</Text>}
         </TouchableOpacity>
         {verifyError && <Text style={styles.errorText}>{verifyError}</Text>}
 
         <Text style={styles.resendText}>
-          Didn't get it?{' '}
+          {t('auth.verify.noCode')}{' '}
           {resendCooldown > 0
-            ? <Text style={styles.resendLinkDisabled}>Resend code ({resendCooldown}s)</Text>
-            : <Text style={styles.resendLink} onPress={() => handleCodeResend()}>Resend code</Text>}
+            ? <Text style={styles.resendLinkDisabled}>{t('auth.verify.resendCountdown', { seconds: resendCooldown })}</Text>
+            : <Text style={styles.resendLink} onPress={() => handleCodeResend()}>{t('auth.verify.resend')}</Text>}
         </Text>
       </ScrollView>
     </SafeAreaView>
