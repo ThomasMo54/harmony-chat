@@ -65,9 +65,10 @@ class UserService(
     }
 
     private fun createUser(createUserDto: CreateUserDto): User {
+        createUserDto.name = createUserDto.name.lowercase()
         val user = createUserDto.toEntity(passwordEncoder)
         try {
-            return userRepository.save(user)
+            return userRepository.saveAndFlush(user)
         } catch (ex: DataIntegrityViolationException) {
             val constraintName = (ex.cause as? ConstraintViolationException)?.constraintName
             throw when (constraintName) {

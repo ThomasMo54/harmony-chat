@@ -14,6 +14,6 @@ data class CreateUserDto(
     val password: String,
 
     @field:NotBlank
-    @field:Size(max = 30)
-    val name: String,
+    @field:Size(min = 3, max = 30)
+    var name: String,
 )
