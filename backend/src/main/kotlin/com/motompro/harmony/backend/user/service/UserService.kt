@@ -1,16 +1,22 @@
-package com.motompro.harmony.backend.user
+package com.motompro.harmony.backend.user.service
 
 import com.motompro.harmony.backend.user.dto.CreateUserDto
+import com.motompro.harmony.backend.user.dto.UserDto
+import com.motompro.harmony.backend.user.entity.PublicUser
 import com.motompro.harmony.backend.user.entity.User
 import com.motompro.harmony.backend.user.entity.UserActivationCode
 import com.motompro.harmony.backend.user.exception.EmailAlreadyExistsException
 import com.motompro.harmony.backend.user.exception.NameAlreadyExistsException
 import com.motompro.harmony.backend.user.exception.UserWithIdNotFoundException
+import com.motompro.harmony.backend.user.mapper.toDto
 import com.motompro.harmony.backend.user.mapper.toEntity
 import com.motompro.harmony.backend.user.repository.UserRepository
 import com.motompro.harmony.backend.user.repository.UserActivationCodeRepository
 import org.hibernate.exception.ConstraintViolationException
 import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -48,8 +54,16 @@ class UserService(
         return userRepository.findById(id).orElse(null)
     }
 
+    fun findPublicUsersByIdIn(ids: Collection<UUID>): List<PublicUser> {
+        return userRepository.findPublicUsersByIdIn(ids)
+    }
+
     fun findUserActivationCodeByCode(code: String): UserActivationCode? {
         return userActivationCodeRepository.findById(code).orElse(null)
+    }
+
+    fun searchUsersByName(fragment: String, pageable: Pageable): Page<User> {
+        return userRepository.findAllByNameContainingIgnoreCase(fragment, pageable)
     }
 
     fun activateUser(userId: UUID) {

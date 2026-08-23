@@ -1,6 +1,6 @@
 package com.motompro.harmony.backend.user.dto
 
-import com.motompro.harmony.backend.user.UserService
+import com.motompro.harmony.backend.user.service.UserService
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
 

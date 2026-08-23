@@ -1,4 +1,4 @@
-package com.motompro.harmony.backend.user
+package com.motompro.harmony.backend.user.service
 
 import com.motompro.harmony.backend.mail.MailService
 import com.motompro.harmony.backend.mail.MailTemplateService

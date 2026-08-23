@@ -2,8 +2,7 @@ package com.motompro.harmony.backend.user.dto
 
 import java.util.UUID
 
-data class UserDto(
+class PublicUserDto(
     val id: UUID,
-    val email: String,
     val name: String,
 )
