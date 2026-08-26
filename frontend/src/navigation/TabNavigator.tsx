@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTranslation } from "react-i18next";
 import { COLORS } from "../constants/colors.ts";
-import LoginScreen from "../screens/Auth/Login/LoginScreen.tsx";
+import ContactListScreen from "../screens/Tab/Contact/ContactList/ContactListScreen.tsx";
 
 const Tab = createBottomTabNavigator();
 
@@ -15,7 +15,7 @@ function TabNavigator() {
         tabBarActiveTintColor: COLORS.primary,
       }}
     >
-      <Tab.Screen name="Home" component={LoginScreen} options={{ title: t('tabs.home') }} />
+      <Tab.Screen name="ContactList" component={ContactListScreen} options={{ title: t('tabs.contactList') }} />
     </Tab.Navigator>
   );
 }

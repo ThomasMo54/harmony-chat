@@ -5,7 +5,7 @@
     "rateLimited": "Too many attempts. Please wait a moment and try again."
   },
   "tabs": {
-    "home": "Home"
+    "contactList": "Contacts"
   },
   "auth": {
     "login": {
