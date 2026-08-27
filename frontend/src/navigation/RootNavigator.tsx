@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useAuth } from "../context/AuthContext.tsx";
+import { useAuth } from "@/context/AuthContext.tsx";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import AuthNavigator from "./AuthNavigator.tsx";
 import TabNavigator from "./TabNavigator.tsx";

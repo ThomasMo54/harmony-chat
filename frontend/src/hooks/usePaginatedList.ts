@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { Page } from '../api/types/pagination';
+import { Page } from '@/api/types/pagination';
 
 function usePaginatedList<T>(fetchPage: (page: number) => Promise<Page<T>>) {
   const [items, setItems] = useState<T[]>([]);

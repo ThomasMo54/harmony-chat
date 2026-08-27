@@ -1,13 +1,13 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useState } from "react";
-import { COLORS } from "../../../constants/colors.ts";
+import { COLORS } from "@/constants/colors.ts";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { AuthStackParamList } from "../../../navigation/types.ts";
+import { AuthStackParamList } from "@/navigation/types.ts";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
-import { createUser, USER_ERROR_CODES } from "../../../api/userApi.ts";
+import { createUser, USER_ERROR_CODES } from "@/api/userApi.ts";
 
 type RegisterScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, 'Register'>;
 

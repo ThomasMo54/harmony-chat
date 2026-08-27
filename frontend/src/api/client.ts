@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { secureStorage } from "../utils/secureStorage.ts";
-import { ENV } from "../config/env.ts";
-import { authEvents } from "../utils/authEvents.ts";
+import { secureStorage } from "@/utils/secureStorage.ts";
+import { ENV } from "@/config/env.ts";
+import { authEvents } from "@/utils/authEvents.ts";
 
 const apiClient = axios.create({
   baseURL: ENV.API_BASE_URL,

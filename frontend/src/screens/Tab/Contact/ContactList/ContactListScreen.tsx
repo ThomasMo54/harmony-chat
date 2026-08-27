@@ -7,12 +7,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import AppIcon from '../../../../components/AppIcon/AppIcon.tsx';
-import { COLORS } from '../../../../constants/colors.ts';
-import { findContacts } from '../../../../api/contactApi.ts';
+import AppIcon from '@/components/AppIcon/AppIcon.tsx';
+import { COLORS } from '@/constants/colors.ts';
+import { findContacts } from '@/api/contactApi.ts';
 import ContactListRow from './components/ContactListRow.tsx';
-import { useAuth } from '../../../../context/AuthContext.tsx';
-import usePaginatedList from '../../../../hooks/usePaginatedList.ts';
+import { useAuth } from '@/context/AuthContext.tsx';
+import usePaginatedList from '@/hooks/usePaginatedList.ts';
 
 const contactsPerPage = 20;
 

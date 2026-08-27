@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTranslation } from "react-i18next";
-import { COLORS } from "../constants/colors.ts";
-import ContactListScreen from "../screens/Tab/Contact/ContactList/ContactListScreen.tsx";
+import { COLORS } from "@/constants/colors.ts";
+import ContactListScreen from "@/screens/Tab/Contact/ContactList/ContactListScreen.tsx";
 
 const Tab = createBottomTabNavigator();
 

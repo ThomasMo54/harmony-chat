@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { secureStorage } from "../utils/secureStorage.ts";
-import { login as loginApi } from '../api/authApi';
-import { authEvents } from "../utils/authEvents.ts";
+import { secureStorage } from "@/utils/secureStorage.ts";
+import { login as loginApi } from '@/api/authApi';
+import { authEvents } from "@/utils/authEvents.ts";
 
 type AuthContextType = {
   isAuthenticated: boolean;

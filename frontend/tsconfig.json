@@ -4,8 +4,7 @@
     "types": ["jest"],
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["src/components/*"],
-      "@screens/*": ["src/screens/*"]
+      "@/*": ["src/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],

@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ActivityIndicator, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useTranslation } from "react-i18next";
-import { COLORS } from "../../../constants/colors.ts";
-import { AuthStackParamList } from "../../../navigation/types.ts";
+import { COLORS } from "@/constants/colors.ts";
+import { AuthStackParamList } from "@/navigation/types.ts";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { activateUser, resendCode, USER_ERROR_CODES } from "../../../api/userApi.ts";
+import { activateUser, resendCode, USER_ERROR_CODES } from "@/api/userApi.ts";
 import axios from "axios";
 
 type VerifyScreenRouteProp = NativeStackScreenProps<AuthStackParamList, 'Verify'>;

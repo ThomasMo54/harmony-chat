@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { ContactSummaryDto } from "../../../../../api/contactApi.ts";
+import { ContactSummaryDto } from "@/api/contactApi.ts";
 
 type ContactListRowProps = {
   contact: ContactSummaryDto;
@@ -10,7 +10,7 @@ function ContactListRow({ contact }: ContactListRowProps) {
     <View style={styles.container}>
       <TouchableOpacity style={styles.touchable}>
         <Image
-          source={require('../../../../../assets/images/placeholder-avatar.png')}
+          source={require('@/assets/images/placeholder-avatar.png')}
           style={styles.avatar}
         />
         <Text style={styles.userName}>{contact.userName}</Text>

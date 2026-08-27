@@ -3,12 +3,12 @@ import { ActivityIndicator, ScrollView, StyleSheet, Text, TextInput, TouchableOp
 import { useState } from "react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
-import { useAuth } from "../../../context/AuthContext.tsx";
-import { COLORS } from "../../../constants/colors.ts";
+import { useAuth } from "@/context/AuthContext.tsx";
+import { COLORS } from "@/constants/colors.ts";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { AuthStackParamList } from "../../../navigation/types.ts";
-import { AUTH_ERROR_CODES } from "../../../api/authApi.ts";
+import { AuthStackParamList } from "@/navigation/types.ts";
+import { AUTH_ERROR_CODES } from "@/api/authApi.ts";
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, 'Login'>;
 
