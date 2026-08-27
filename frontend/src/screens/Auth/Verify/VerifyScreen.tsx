@@ -1,6 +1,15 @@
 import { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ActivityIndicator, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { useTranslation } from "react-i18next";
 import { COLORS } from "@/constants/colors.ts";
 import { AuthStackParamList } from "@/navigation/types.ts";
@@ -139,6 +148,7 @@ function VerifyScreen({ route, navigation }: VerifyScreenRouteProp) {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
+      <StatusBar barStyle="dark-content" />
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>{t('auth.verify.title')}</Text>
 

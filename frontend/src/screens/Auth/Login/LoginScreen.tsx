@@ -1,5 +1,5 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ActivityIndicator, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useState } from "react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
@@ -73,6 +73,7 @@ function LoginScreen() {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
+      <StatusBar barStyle="dark-content" />
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.iconWrapper}>
           <Text style={styles.iconText}>💬</Text>
@@ -100,7 +101,9 @@ function LoginScreen() {
             secureTextEntry={!showPassword}
           />
           <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-            <Text style={styles.showText}>{showPassword ? t('auth.login.hide') : t('auth.login.show')}</Text>
+            <Text style={styles.showText}>
+              {showPassword ? t('auth.login.hide') : t('auth.login.show')}
+            </Text>
           </TouchableOpacity>
         </View>
 
@@ -112,16 +115,23 @@ function LoginScreen() {
           onPress={() => handleLogin()}
           disabled={isSubmitting}
         >
-          {isSubmitting
-            ? <ActivityIndicator color="#fff" />
-            : <Text style={styles.buttonText}>{t('auth.login.submit')}</Text>}
+          {isSubmitting ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>{t('auth.login.submit')}</Text>
+          )}
         </TouchableOpacity>
 
         <View style={styles.divider} />
 
         <Text style={styles.registerText}>
           {t('auth.login.noAccount')}{' '}
-          <Text style={styles.registerLink} onPress={() => navigateToRegister()}>{t('auth.login.createAccount')}</Text>
+          <Text
+            style={styles.registerLink}
+            onPress={() => navigateToRegister()}
+          >
+            {t('auth.login.createAccount')}
+          </Text>
         </Text>
 
         <TouchableOpacity onPress={logout}>
@@ -129,7 +139,7 @@ function LoginScreen() {
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({

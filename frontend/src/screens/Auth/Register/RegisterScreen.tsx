@@ -1,5 +1,5 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useState } from "react";
 import { COLORS } from "@/constants/colors.ts";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -88,7 +88,7 @@ function RegisterScreen() {
 
   function handleRegisterError(err: unknown) {
     if (!axios.isAxiosError(err)) {
-      setRegisterError(t('common.genericError'))
+      setRegisterError(t('common.genericError'));
       return;
     }
 
@@ -100,7 +100,7 @@ function RegisterScreen() {
     const { status, data } = err.response;
 
     if (status === 429) {
-      setRegisterError(t('common.rateLimited'))
+      setRegisterError(t('common.rateLimited'));
       return;
     }
 
@@ -120,6 +120,7 @@ function RegisterScreen() {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
+      <StatusBar barStyle="dark-content" />
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.iconWrapper}>
           <Text style={styles.iconText}>💬</Text>
