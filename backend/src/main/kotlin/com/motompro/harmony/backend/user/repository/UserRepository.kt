@@ -12,8 +12,11 @@ interface UserRepository : JpaRepository<User, UUID> {
 
     fun findPublicUsersByIdIn(ids: Collection<UUID>): List<PublicUser>
 
+    fun findByName(name: String): Optional<User>
+
     fun findByEmail(email: String): Optional<User>
 
     fun findAllByNameContainingIgnoreCase(fragment: String, pageable: Pageable): Page<User>
+
     fun id(id: UUID): MutableList<User>
 }

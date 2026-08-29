@@ -54,6 +54,10 @@ class UserService(
         return userRepository.findById(id).orElse(null)
     }
 
+    fun findByName(name: String): User? {
+        return userRepository.findByName(name).orElse(null)
+    }
+
     fun findPublicUsersByIdIn(ids: Collection<UUID>): List<PublicUser> {
         return userRepository.findPublicUsersByIdIn(ids)
     }

@@ -6,5 +6,7 @@ import java.util.UUID
 data class ContactRequestDto(
     val requesterId: UUID,
     val requestedId: UUID,
+    val requesterName: String,
+    val requestedName: String,
     val createdAt: OffsetDateTime,
 )

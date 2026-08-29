@@ -5,8 +5,10 @@ import com.motompro.harmony.backend.contact.dto.ContactSummaryDto
 import com.motompro.harmony.backend.contact.dto.ContactRequestAnswerDto
 import com.motompro.harmony.backend.contact.dto.ContactRequestDto
 import com.motompro.harmony.backend.contact.dto.CreateContactRequestDto
-import com.motompro.harmony.backend.contact.mapper.toDto
 import com.motompro.harmony.backend.contact.service.ContactService
+import com.motompro.harmony.backend.user.exception.UserWithEmailNotFoundException
+import com.motompro.harmony.backend.user.exception.UserWithIdNotFoundException
+import com.motompro.harmony.backend.user.exception.UserWithNameNotFoundException
 import com.motompro.harmony.backend.user.service.UserService
 import jakarta.validation.Valid
 import org.springframework.data.domain.Page
@@ -34,7 +36,9 @@ class ContactController(
         @AuthenticationPrincipal principal: UserPrincipal,
         @Valid @RequestBody createContactRequestDto: CreateContactRequestDto,
     ) {
-        contactService.createContactRequest(principal.getId(), createContactRequestDto.requestedId)
+        val user = userService.findByName(createContactRequestDto.requestedName)
+            ?: throw UserWithNameNotFoundException(createContactRequestDto.requestedName)
+        contactService.createContactRequest(principal.getId(), user.id)
     }
 
     @GetMapping
@@ -65,8 +69,26 @@ class ContactController(
         @PageableDefault(size = 20, sort = ["createdAt"], direction = Sort.Direction.DESC)
         pageable: Pageable
     ): Page<ContactRequestDto> {
-        return contactService.findContactRequestsByRequester(principal.getId(), pageable)
-            .map { it.toDto() }
+        val userId = principal.getId()
+        val user = userService.findUserById(userId) ?: throw UserWithIdNotFoundException(userId)
+        val requestsPage = contactService.findContactRequestsByRequester(principal.getId(), pageable)
+
+        val requestedUserIds = requestsPage.content.map { it.id.requestedId }
+        val publicRequestedById = userService.findPublicUsersByIdIn(requestedUserIds).associateBy { it.id }
+
+        val dtos = requestsPage.content.map { contactRequest ->
+            val requestedUserId = contactRequest.id.requestedId
+            val publicRequested = publicRequestedById[requestedUserId]!!
+            ContactRequestDto(
+                userId,
+                requestedUserId,
+                user.name,
+                publicRequested.name,
+                contactRequest.createdAt,
+            )
+        }
+
+        return PageImpl(dtos, requestsPage.pageable, requestsPage.totalElements)
     }
 
     @GetMapping("/requests/received")
@@ -75,8 +97,26 @@ class ContactController(
         @PageableDefault(size = 20, sort = ["createdAt"], direction = Sort.Direction.DESC)
         pageable: Pageable
     ): Page<ContactRequestDto> {
-        return contactService.findContactRequestsByRequested(principal.getId(), pageable)
-            .map { it.toDto() }
+        val userId = principal.getId()
+        val user = userService.findUserById(userId) ?: throw UserWithIdNotFoundException(userId)
+        val requestsPage = contactService.findContactRequestsByRequested(principal.getId(), pageable)
+
+        val requesterUserIds = requestsPage.content.map { it.id.requesterId }
+        val publicRequesterById = userService.findPublicUsersByIdIn(requesterUserIds).associateBy { it.id }
+
+        val dtos = requestsPage.content.map { contactRequest ->
+            val requesterUserId = contactRequest.id.requesterId
+            val publicRequester = publicRequesterById[requesterUserId]!!
+            ContactRequestDto(
+                requesterUserId,
+                userId,
+                publicRequester.name,
+                user.name,
+                contactRequest.createdAt,
+            )
+        }
+
+        return PageImpl(dtos, requestsPage.pageable, requestsPage.totalElements)
     }
 
     @PutMapping("/requests/accept")

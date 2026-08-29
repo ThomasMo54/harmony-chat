@@ -17,6 +17,14 @@ import { findContacts } from '@/api/contactApi.ts';
 import ContactListRow from '@/screens/Tab/Contact/components/ContactListRow.tsx';
 import { useAuth } from '@/context/AuthContext.tsx';
 import usePaginatedList from '@/hooks/usePaginatedList.ts';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { ContactStackParamList } from '@/navigation/types.ts';
+import { useNavigation } from '@react-navigation/native';
+
+type ContactListScreenNavigationProp = NativeStackNavigationProp<
+  ContactStackParamList,
+  'ContactList'
+>;
 
 const contactsPerPage = 20;
 
@@ -26,12 +34,15 @@ function ContactListScreen() {
   );
   const { logout } = useAuth();
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation<ContactListScreenNavigationProp>();
 
   return (
     <SafeAreaView style={styles.safe} edges={['bottom']}>
       <StatusBar barStyle="dark-content" />
       <View style={[styles.header, { paddingTop: insets.top + 12 }]}>
-        <TouchableOpacity onPress={() => console.log('Pressed')}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('ContactRequestList')}
+        >
           <AppIcon name="user-plus" size={20} color={COLORS.primary} />
         </TouchableOpacity>
         <TouchableOpacity onPress={logout}>
@@ -53,10 +64,6 @@ const styles = StyleSheet.create({
   safe: {
     flex: 1,
     backgroundColor: COLORS.bg,
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
   },
   header: {
     flexDirection: 'row',

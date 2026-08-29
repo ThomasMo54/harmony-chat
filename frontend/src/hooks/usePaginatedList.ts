@@ -28,9 +28,13 @@ function usePaginatedList<T>(fetchPage: (page: number) => Promise<Page<T>>) {
 
   useEffect(() => {
     loadMoreRef.current();
-  }, []); // montage uniquement
+  }, []);
 
-  return { items, loadMore, hasMore, isLoading };
+  const removeItem = useCallback((predicate: (item: T) => boolean) => {
+    setItems(prev => prev.filter(item => !predicate(item)));
+  }, []);
+
+  return { items, loadMore, hasMore, isLoading, removeItem };
 }
 
 export default usePaginatedList;

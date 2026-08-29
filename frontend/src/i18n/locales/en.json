@@ -63,5 +63,19 @@
         "generic": "Unable to verify your account. Please try again."
       }
     }
+  },
+  "contact": {
+    "request": {
+      "title": "Contact requests",
+      "searchPlaceholder": "Search for a new contact",
+      "requestSent": "Request sent to {{user}}.",
+      "errors": {
+        "userNotFound": "This user does not exist.",
+        "requestToSelf": "You cannot send a request to yourself.",
+        "alreadyInContacts": "This user is already in you contacts.",
+        "requestAlreadySent": "You already sent a request to this user.",
+        "generic": "Unable to send a request. Please try again."
+      }
+    }
   }
 }

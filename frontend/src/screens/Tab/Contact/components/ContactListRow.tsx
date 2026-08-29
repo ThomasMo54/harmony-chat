@@ -1,11 +1,13 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { ContactSummaryDto } from "@/api/contactApi.ts";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ContactSummaryDto } from '@/api/contactApi.ts';
+import { ReactNode } from 'react';
 
 type ContactListRowProps = {
+  children?: ReactNode;
   contact: ContactSummaryDto;
 };
 
-function ContactListRow({ contact }: ContactListRowProps) {
+function ContactListRow({ children, contact }: ContactListRowProps) {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.touchable}>
@@ -14,9 +16,10 @@ function ContactListRow({ contact }: ContactListRowProps) {
           style={styles.avatar}
         />
         <Text style={styles.userName}>{contact.userName}</Text>
+        <View style={styles.contentWrapper}>{children}</View>
       </TouchableOpacity>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -30,14 +33,17 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   avatar: {
-    width: 50,
-    height: 50
+    width: 45,
+    height: 45,
   },
   userName: {
     marginLeft: 12,
-    fontWeight: "bold",
-    fontSize: 18
-  }
-})
+    fontWeight: 'bold',
+    fontSize: 18,
+  },
+  contentWrapper: {
+    flex: 1,
+  },
+});
 
-export default ContactListRow
+export default ContactListRow;
