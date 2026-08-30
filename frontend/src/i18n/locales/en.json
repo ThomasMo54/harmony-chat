@@ -5,7 +5,8 @@
     "rateLimited": "Too many attempts. Please wait a moment and try again."
   },
   "tabs": {
-    "contactList": "Contacts"
+    "contactList": "Contacts",
+    "profile": "Profile"
   },
   "auth": {
     "login": {
@@ -65,6 +66,9 @@
     }
   },
   "contact": {
+    "list": {
+      "title": "Contacts"
+    },
     "request": {
       "title": "Contact requests",
       "searchPlaceholder": "Search for a new contact",
@@ -77,5 +81,8 @@
         "generic": "Unable to send a request. Please try again."
       }
     }
+  },
+  "profile": {
+    "title": "Profile"
   }
 }

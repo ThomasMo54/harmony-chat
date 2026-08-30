@@ -1,5 +1,6 @@
 package com.motompro.harmony.backend.user.controller
 
+import com.motompro.harmony.backend.auth.UserPrincipal
 import com.motompro.harmony.backend.interceptor.ratelimit.RateLimit
 import com.motompro.harmony.backend.user.service.UserNotificationService
 import com.motompro.harmony.backend.user.service.UserService
@@ -21,6 +22,7 @@ import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -44,6 +46,13 @@ class UserController(
         val (user, activationCode) = userService.createUserAndActivationCode(createUserDto)
         userNotificationService.sendWelcomeEmail(user, activationCode.code, UserService.VALIDATION_CODE_EXPIRATION_TIME)
         return ResponseEntity.status(HttpStatus.CREATED).body(user.toDto())
+    }
+
+    @GetMapping("/me")
+    fun getMyUser(@AuthenticationPrincipal principal: UserPrincipal): UserDto {
+        val userId = principal.getId()
+        val user = userService.findUserById(userId) ?: throw UserWithIdNotFoundException(userId)
+        return user.toDto()
     }
 
     @GetMapping("/search")

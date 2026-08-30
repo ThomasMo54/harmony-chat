@@ -1,4 +1,4 @@
-import apiClient from "./client.ts";
+import apiClient from './client.ts';
 
 export const USER_ERROR_CODES = {
   EMAIL_ALREADY_EXISTS: 'error.user.email_already_exists',
@@ -31,6 +31,11 @@ export class ResendCodeDto {
 
 export async function createUser(createUserDto: CreateUserDto) {
   const { data } = await apiClient.post('/users', createUserDto);
+  return data as UserDto;
+}
+
+export async function getMyUser() {
+  const { data } = await apiClient.get('/users/me');
   return data as UserDto;
 }
 

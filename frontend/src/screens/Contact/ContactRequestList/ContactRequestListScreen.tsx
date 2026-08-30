@@ -1,6 +1,5 @@
 import {
   FlatList,
-  Platform,
   StatusBar,
   StyleSheet,
   Text,
@@ -9,10 +8,7 @@ import {
   View,
 } from 'react-native';
 import { COLORS } from '@/constants/colors.ts';
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import AppIcon from '@/components/AppIcon/AppIcon.tsx';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -27,10 +23,11 @@ import {
   rejectContactRequest,
   requestContact,
 } from '@/api/contactApi.ts';
-import ContactRequestListRow from '@/screens/Tab/Contact/ContactRequestList/components/ContactRequestListRow.tsx';
 import axios from 'axios';
 import { USER_ERROR_CODES } from '@/api/userApi.ts';
 import Toast from 'react-native-toast-message';
+import ContactRequestListRow from '@/screens/Contact/ContactRequestList/components/ContactRequestListRow.tsx';
+import Header from '@/components/Header.tsx';
 
 type ContactRequestListScreenNavigationProp = NativeStackNavigationProp<
   ContactStackParamList,
@@ -50,7 +47,6 @@ function ContactRequestListScreen() {
   const { t } = useTranslation();
   const [userSearch, setUserSearch] = useState('');
   const [userSearchError, setUserSearchError] = useState('');
-  const insets = useSafeAreaInsets();
   const navigation = useNavigation<ContactRequestListScreenNavigationProp>();
 
   async function handleSendRequest() {
@@ -85,8 +81,6 @@ function ContactRequestListScreen() {
       setUserSearchError(t('common.rateLimited'));
       return;
     }
-
-    console.log(data);
 
     switch (data?.code) {
       case USER_ERROR_CODES.NOT_FOUND: {
@@ -123,12 +117,12 @@ function ContactRequestListScreen() {
   return (
     <SafeAreaView style={styles.safe} edges={['bottom']}>
       <StatusBar barStyle="dark-content" />
-      <View style={[styles.header, { paddingTop: insets.top + 12 }]}>
+      <Header>
         <TouchableOpacity onPress={() => navigation.push('ContactList')}>
           <AppIcon name="arrow-left" size={20} color={COLORS.primary} />
         </TouchableOpacity>
         <Text style={styles.title}>{t('contact.request.title')}</Text>
-      </View>
+      </Header>
 
       <View style={styles.inputWrapper}>
         <AppIcon name={'magnifying-glass'} size={20} />
@@ -173,29 +167,6 @@ const styles = StyleSheet.create({
   safe: {
     flex: 1,
     backgroundColor: COLORS.bg,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    gap: 16,
-    width: '100%',
-    paddingBottom: 12,
-    paddingHorizontal: 16,
-    backgroundColor: COLORS.bg,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.border,
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.08,
-        shadowRadius: 4,
-      },
-      android: {
-        elevation: 4,
-      },
-    }),
   },
   title: {
     fontSize: 18,

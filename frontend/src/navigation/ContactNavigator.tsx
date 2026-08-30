@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ContactStackParamList } from '@/navigation/types.ts';
-import ContactListScreen from '@/screens/Tab/Contact/ContactList/ContactListScreen.tsx';
-import ContactRequestListScreen from '@/screens/Tab/Contact/ContactRequestList/ContactRequestListScreen.tsx';
+import ContactListScreen from '@/screens/Contact/ContactList/ContactListScreen.tsx';
+import ContactRequestListScreen from '@/screens/Contact/ContactRequestList/ContactRequestListScreen.tsx';
 
 const Stack = createNativeStackNavigator<ContactStackParamList>();
 

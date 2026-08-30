@@ -1,8 +1,8 @@
 import { ContactSummaryDto } from '@/api/contactApi.ts';
-import ContactListRow from '@/screens/Tab/Contact/components/ContactListRow.tsx';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import AppIcon from '@/components/AppIcon/AppIcon.tsx';
 import { COLORS } from '@/constants/colors.ts';
+import ContactListRow from '@/screens/Contact/components/ContactListRow.tsx';
 
 type ContactRequestListRowProps = {
   contact: ContactSummaryDto;
